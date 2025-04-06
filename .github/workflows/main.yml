@@ -2,43 +2,41 @@ name: ML Workflow
 
 on:
   push:
-    branches: ["main"]
+    branches: ["main"] # Déclenche le workflow lors d'un push sur la branche 'main'
   pull_request:
-    branches: ["main"]
-  workflow_dispatch:
-  
-permissions: write-all
+    branches: ["main"] # Déclenche le workflow lors d'une pull request ciblant la branche 'main'
+  workflow_dispatch: # Permet de déclencher manuellement le workflow depuis l'interface GitHub Actions
+
+permissions: write-all # Accorde des permissions d'écriture étendues au workflow (à utiliser avec prudence)
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  build: # Définit un job nommé 'build'
+    runs-on: ubuntu-latest # Spécifie que ce job s'exécutera sur la dernière version d'Ubuntu
 
-    steps:
-      -uses: actions/checkout@v3
+    steps: # Définit une série d'étapes à exécuter dans le job 'build'
+      - uses: actions/checkout@v3 # Utilise l'action 'actions/checkout' en version 3 pour cloner le dépôt
         with:
-          lfs: true
-      - uses: iterative/setup-cml@v2
-      - name: install packages
-        run: pip install --upgrade pip && pip install -r requirements.txt
-      - name: Format
-        run: BLACK   *.py
-      - name: Train
-        run: python train.py
-      - name: Evaluattion
+          lfs: true # Indique à l'action de checkout de gérer les fichiers volumineux (Large File Storage)
+
+      - uses: iterative/setup-cml@v2 # Utilise l'action 'iterative/setup-cml' en version 2 pour configurer CML (Continuous Machine Learning)
+
+      - name: Install packages # Définit une étape nommée 'Install packages'
+        run: pip install --upgrade pip && pip install -r requirements.txt # Exécute les commandes pour mettre à jour pip et installer les dépendances listées dans le fichier 'requirements.txt'
+
+      - name: Format # Définit une étape nommée 'Format'
+        run: black *.py # Exécute la commande 'black' pour formater automatiquement tous les fichiers Python (.py) du dépôt
+
+      - name: Train # Définit une étape nommée 'Train'
+        run: python train.py # Exécute le script Python 'train.py', probablement pour entraîner le modèle de machine learning
+
+      - name: Evaluation # Définit une étape nommée 'Evaluation'
         env:
-          REPO_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        run:
-          echo "## Model Metrics">report.md
-          cat metrics.txt >>report.md
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Définit une variable d'environnement nommée 'REPO_TOKEN' contenant le token GitHub du workflow (pour les interactions avec le dépôt)
+        run: | # Exécute une série de commandes shell
+          echo "## Model Metrics" > report.md # Crée ou écrase le fichier 'report.md' et y écrit l'en-tête "## Model Metrics"
+          cat metrics.txt >> report.md # Ajoute le contenu du fichier 'metrics.txt' (contenant probablement les métriques du modèle) à la fin de 'report.md'
 
-          echo "## Confusion Matrix plot">> report.md
-          echo "![Confusion Matrix](model_results.png)" >> report.md
+          echo "## Confusion Matrix plot" >> report.md # Ajoute l'en-tête "## Confusion Matrix plot" à la fin de 'report.md'
+          echo "![Confusion Matrix](model_results.png)" >> report.md # Ajoute un markdown pour afficher une image nommée 'model_results.png' (probablement la matrice de confusion) à la fin de 'report.md'
 
-          cat commment create report.md
-
-
-
-
-
-
-        
+          cml comment create report.md # Utilise la commande CML pour créer un commentaire dans la pull request ou le commit avec le contenu du fichier 'report.md'
