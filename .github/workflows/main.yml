@@ -33,7 +33,7 @@ jobs:
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Définit une variable d'environnement nommée 'REPO_TOKEN' contenant le token GitHub du workflow (pour les interactions avec le dépôt)
         run: | # Exécute une série de commandes shell
-          echo "## Model Metrics" > report.md # Crée ou écrase le fichier 'report.md' et y écrit l'en-tête "## Model Metrics"
+          echo "## Model Metrics" > report.md # Crée ou écrase le fichier 'report.md' et y écrit l'en-tête " ## Model Metrics"
           cat metrics.txt >> report.md # Ajoute le contenu du fichier 'metrics.txt' (contenant probablement les métriques du modèle) à la fin de 'report.md'
 
           echo "## Confusion Matrix plot" >> report.md # Ajoute l'en-tête "## Confusion Matrix plot" à la fin de 'report.md'
