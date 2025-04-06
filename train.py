@@ -106,6 +106,24 @@ class ChurnModelPipeline:
             outfile.write(f"accuracy = {round(accuracy, 2)}, F1 score: {round(f1, 2)}\n")
         print("Metrics saved in metrics.txt")
 
+    def plot_roc_curve(self):
+        """Plot and save ROC curve for the classifier."""
+        print("Plotting ROC curve...")
+        y_probs = self.model_pipeline.predict_proba(self.X_test)[:, 1]  # Probabilities for class 1
+        fpr, tpr, _ = roc_curve(self.y_test, y_probs)
+
+        plt.figure(figsize=(8, 6))
+        plt.plot(fpr, tpr, color='darkorange', lw=2, label=f'ROC curve (area = {roc_auc_score(self.y_test, y_probs):.2f})')
+        plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
+        plt.xlim([0.0, 1.0])
+        plt.ylim([0.0, 1.05])
+        plt.xlabel('False Positive Rate')
+        plt.ylabel('True Positive Rate')
+        plt.title('Receiver Operating Characteristic (ROC) Curve')
+        plt.legend(loc="lower right")
+        plt.savefig("roc_curve.png", dpi=120)
+        print("ROC curve saved as 'roc_curve.png'.")
+
     def save_pipeline(self):
         print("saving pipeline to file...")
         sio.dump(self.model_pipeline, "churn_pipeline.skops")
@@ -133,7 +151,7 @@ if __name__ == "__main__":
     #plot CM and saved the metrics 
     churn_pipeline.plot_confusion_matrix()
     churn_pipeline.save_matrics(accuracy=accuracy, f1=f1)
-
+    churn_pipeline.plot_roc_curve()
     # save the pipeline 
     churn_pipeline.save_pipeline()
 
