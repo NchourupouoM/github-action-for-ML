@@ -86,7 +86,7 @@ class ChurnModelPipeline:
         self.model_pipeline.fit(self.X_train, self.y_train)
 
         # Enregistrer le modèle dans un fichier
-        filename = 'models/modele_logistic.pkl'
+        filename = '../models/modele_logistic.pkl'
         with open(filename, 'wb') as file:
             pickle.dump(self.model_pipeline, file)
 
