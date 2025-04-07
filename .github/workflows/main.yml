@@ -24,7 +24,7 @@ jobs:
         run: pip install --upgrade pip && pip install -r requirements.txt # Exécute les commandes pour mettre à jour pip et installer les dépendances listées dans le fichier 'requirements.txt'
 
       - name: Format # Définit une étape nommée 'Format'
-        run: black *.py # Exécute la commande 'black' pour formater automatiquement tous les fichiers Python (.py) du dépôt
+        run: black scripts/*.py # Exécute la commande 'black' pour formater automatiquement tous les fichiers Python (.py) du dépôt
 
       - name: Train # Définit une étape nommée 'Train'
         run: python scripts/train.py # Exécute le script Python 'train.py', probablement pour entraîner le modèle de machine learning
