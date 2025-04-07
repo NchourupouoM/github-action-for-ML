@@ -4,3 +4,4 @@ matplotlib
 skops
 black
 numpy
+seaborn
