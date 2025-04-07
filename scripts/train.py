@@ -98,7 +98,7 @@ class ChurnModelPipeline:
 
         # Enregistrer le modèle dans un fichier
 
-        with open('../models/modele_logistic.pkl', 'wb') as file:
+        with open('models/modele_logistic.pkl', 'wb') as file:
             pickle.dump(self.model_pipeline, file)
 
         print("Model training completed and saved successfuly.")
