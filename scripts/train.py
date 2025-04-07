@@ -108,7 +108,7 @@ if __name__ == "__main__":
     data_file = "data/Churn_Modelling.csv"
     target_col = "Exited"
     drop_cols = ["RowNumber","CustomerId","Surname"]
-    output_dir_data = "../data/split datas"
+    output_dir_data = "data/split datas"
     
     cat_columns = [1,2] # indices after dropping
     num_columns = [0,3,4,5,6,7,8,9]
