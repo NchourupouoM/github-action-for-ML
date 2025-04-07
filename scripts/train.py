@@ -105,7 +105,7 @@ class ChurnModelPipeline:
 
 if __name__ == "__main__":
     #configuration
-    data_file = "../data/Churn_Modelling.csv"
+    data_file = "data/Churn_Modelling.csv"
     target_col = "Exited"
     drop_cols = ["RowNumber","CustomerId","Surname"]
     output_dir_data = "../data/split datas"
