@@ -4,11 +4,17 @@ from sklearn.metrics import ConfusionMatrixDisplay, accuracy_score, confusion_ma
 import skops.io as sio
 from train import ChurnModelPipeline
 import pickle
+import numpy as np
+import os
+import pandas as pd
+
+output_dir_data = "../data/split datas"
 
 class EvaluateChurnModel:
     def __init__(self, model_trained):
        self.model_pipeline = model_trained
-       self.X_test, self.y_test = ChurnModelPipeline.load_and_prepare_dataset()
+       self.X_test = pd.read_csv(os.path.join(output_dir_data, 'X_test.csv'))
+       self.y_test = pd.read_csv(os.path.join(output_dir_data, 'y_test.csv'))
 
     def evaluate_model(self):
         print("Evaluating the model...")
@@ -24,12 +30,12 @@ class EvaluateChurnModel:
         cm = confusion_matrix(self.y_test, prediction, labels=self.model_pipeline.classes_)
         disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=self.model_pipeline.classes_)
         disp.plot()
-        plt.savefig("model_result.png", dpi=120)
+        plt.savefig("../metrics/model_result.png", dpi=120)
         print("Confusion matrix saved as model_results.png")
 
     def save_matrics(self, accuracy, f1):
         print("saving metrics to file...")
-        with open("metrics/metrics.txt", "w") as outfile:
+        with open("../metrics/metrics.txt", "w") as outfile:
             outfile.write(f"accuracy = {round(accuracy, 2)}, \n F1 score: {round(f1, 2)}\n")
         print("Metrics saved in metrics.txt")
 
@@ -48,18 +54,18 @@ class EvaluateChurnModel:
         plt.ylabel('True Positive Rate')
         plt.title('Receiver Operating Characteristic (ROC) Curve')
         plt.legend(loc="lower right")
-        plt.savefig("roc_curve.png", dpi=120)
+        plt.savefig("../metrics/roc_curve.png", dpi=120)
         print("ROC curve saved as 'roc_curve.png'.")
 
     def save_pipeline(self):
         print("saving pipeline to file...")
-        sio.dump(self.model_pipeline, "models/churn_pipeline.skops")
+        sio.dump(self.model_pipeline, "../models/churn_pipeline.skops")
         print("Pipeline saved as 'churn_prediction.skops'.")
 
 if __name__ == "__main__":
 
     # Pour charger le modèle ultérieurement :
-    filename = "modele_logistic.pkl"
+    filename = "../models/modele_logistic.pkl"
     with open(filename, 'rb') as file:
         model = pickle.load(file)
 
