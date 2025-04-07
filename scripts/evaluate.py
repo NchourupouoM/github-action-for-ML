@@ -59,7 +59,7 @@ class EvaluateChurnModel:
 if __name__ == "__main__":
 
     # Pour charger le modèle ultérieurement :
-    filename = "models/modele_logistic.pkl"
+    filename = "modele_logistic.pkl"
     with open(filename, 'rb') as file:
         model = pickle.load(file)
 
